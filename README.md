@@ -25,6 +25,12 @@ This repository provides the general layout of a fullstack NERP (Node, Express, 
 
 ## Setup Client
 
+- Navigate to the client directory
+
+- Remove the .git directory
+    ```rm -rf .git```
+    - This will allow us to initialize git in the base directory
+
 - Install the following dependencies
     ```npm i react-router-dom axios```
 
@@ -83,8 +89,6 @@ This repository provides the general layout of a fullstack NERP (Node, Express, 
         ```
 
 ## (Optional) Setup Redux
-
-- Navigate to the client directory
 
 - Install redux dependencies
     ```npm i redux react-redux redux-thunk```
@@ -222,6 +226,75 @@ This repository provides the general layout of a fullstack NERP (Node, Express, 
             }
         }
         ```
+
+- Create a schema directory
+    ```mkdir schema```
+    - Inside the schema directory, create a index.js file and add the following to it
+        ```js
+        'use strict';
+
+        const fs = require('fs');
+        const path = require('path');
+        const Sequelize = require('sequelize');
+        const basename = path.basename(__filename);
+        const env = process.env.NODE_ENV || 'development';
+        const config = require(__dirname + '/../config/config.json')[env];
+        const db = {};
+
+        let sequelize;
+        if (config.use_env_variable) {
+            sequelize = new Sequelize(process.env[config.use_env_variable], config);
+        } else {
+            sequelize = new Sequelize(config.database, config.username, config.password, config);
+        }
+
+        fs
+            .readdirSync(__dirname)
+            .filter(file => {
+                return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+            })
+            .forEach(file => {
+                const model = sequelize['import'](path.join(__dirname, file));
+                db[model.name] = model;
+            });
+
+        Object.keys(db).forEach(modelName => {
+            if (db[modelName].associate) {
+                db[modelName].associate(db);
+            }
+        });
+
+        db.sequelize = sequelize;
+        db.Sequelize = Sequelize;
+
+        module.exports = db;
+        ```
+    - Create a schema file
+        ```touch schemaName.js```
+    - Add the following base code to the file
+        ```js
+        "use strict";
+
+        module.exports = (sequelize, DataTypes) => {
+            const schemaName = sequelize.define(
+                "schemaName",
+                {
+                    attribute: DataTypes.TYPE,
+                },
+                {
+                    freezeTableName: true,
+                    
+                }
+            );
+
+            schemaName.associate = models => {
+
+            };
+
+            return schemaName;
+        };
+        ```
+    - See [DataTypes](http://docs.sequelizejs.com/variable/index.html#static-variable-DataTypes)
 
 - Modify the app.js file
     - Rename the file to server.js

@@ -6,11 +6,21 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "connect-flash": "^0.1.1",
+    "connect-pg-simple": "^5.0.0",
+    "connect-session-sequelize": "^6.0.0",
     "cookie-parser": "~1.4.3",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.16.0",
+    "express-session": "^1.16.1",
     "http-errors": "~1.6.2",
-    "morgan": "~1.9.0"
+    "morgan": "~1.9.0",
+    "pg": "^7.9.0",
+    "pg-hstore": "^2.3.2",
+    "pg-promise": "^8.6.4",
+    "sequelize": "^5.3.2",
+    "sequelize-session-store": "^0.1.0"
   }
 }
