@@ -1,24 +1,25 @@
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
-    const user = sequelize.define(
-        "user",
-        {
-            username: DataTypes.STRING(20),
-            password: DataTypes.STRING,
-            email: DataTypes.STRING(40),
-            bio: DataTypes.STRING(500)
-            
-        },
-        {
-            freezeTableName: true,
-            
-        }
-    );
+  const user = sequelize.define(
+    "user",
+    {
+      username: {
+        type: DataTypes.STRING(20),
+        unique: true
+      },
+      password: DataTypes.STRING(40),
+      email: {
+        type: DataTypes.STRING(40),
+        unique: true
+      }
+    },
+    {
+      freezeTableName: true
+    }
+  );
 
-    // user.associate = models => {
+  user.associate = models => {};
 
-    // };
-
-    return user;
+  return user;
 };

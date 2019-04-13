@@ -1,12 +1,23 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
+const db = require("../schema/");
 
-/* GET home page. */
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
 
-  let data = {};
+  // Do something with req
+  // Usually, the req will have URL params for specifying API endpoints
 
-  res.send(data);
+  db.user.findAll().then(users => {
+    let data = {
+      users: users
+    };
+
+    if (users.length === 0) {
+      res.send({});
+    } else {
+      res.send(data);
+    }
+  });
 });
 
 module.exports = router;

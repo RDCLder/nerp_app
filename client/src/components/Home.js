@@ -1,27 +1,40 @@
-import React from 'react';
+import React from "react";
 import axios from "axios";
 
 class Home extends React.Component {
-    // constructor(props) {
-    //     super(props);
-        
-    // }
+  state = {
+    users: []
+  };
 
-    componentDidMount() {
-        axios.get()
+  componentDidMount() {
+    fetch("http://localhost:8080/")
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          users: res.users
+        });
+      });
+  }
+
+  fetchData() {}
+
+  render() {
+    let users;
+
+    if (this.state.users.length > 0) {
+      users = this.state.users.map(user => (
+        <li key={user.username}>{user.username}</li>
+      ));
+    } else {
+      users = "There's nothing here!";
     }
 
-    fetchData() {
-        
-    }
-
-    render() {
-        return (
-            <React.Fragment>
-                Home Component
-            </React.Fragment>
-        );
-    }
+    return (
+			<React.Fragment>
+				{users}
+			</React.Fragment>
+		)
+  }
 }
 
 export default Home;
